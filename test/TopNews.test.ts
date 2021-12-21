@@ -5,14 +5,13 @@ import { expect } from "@playwright/test";
 test.describe("Validate Top News Functionality", () => {
 
   //Login to theHeb application
-  // test.beforeEach(async ({ loginPage }) => {
+  test.beforeEach(async ({ loginPage }) => {
 
-  //   await loginPage.NavigateToUrl(testData.homePageUrl);
+    await loginPage.NavigateToUrl(testData.homePageUrl);
 
-  //   await loginPage.loginToApplication(testData.stageUserName, testData.password, testData.prodUserName);
+    await loginPage.loginToApplication(testData.stageUserName, testData.password, testData.prodUserName);
 
-  // })
-
+  })
 
   test("Top news container functionality validation", async ({ topNewsPage }) => {
     // Verify top news webpart is visible
@@ -29,13 +28,12 @@ test.describe("Validate Top News Functionality", () => {
 
     //Verify the navigation after clicking on the top news article
     await test.step("Test_03_TopNews_Verify_After_Clicking_Article_NavigateTo_Article_LandingPage", async () => {
-      //await topNewsPage.clickTopNewsDots(5);
+      expect(await topNewsPage.VerifyNavigationToArticleLandingPage()).toBe(true);
 
     })
     //Veify navigation to first up article landing page after clicking View all link
     await test.step("Test_04_TopNews_Verify_Click_ViewAll_Link_And_Verify_The_Navigation_To_LandingPage", async () => {
-      //await topNewsPage.clickTopNewsDots(4);
-
+      expect(await topNewsPage.VerifyNavigationLandingPageAfterClikingViewAllLink()).toBe(true);
     })
 
   })

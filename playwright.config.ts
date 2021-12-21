@@ -8,13 +8,15 @@ const config: PlaywrightTestConfig = {
     viewport: { width: 1920, height: 1200 },
     //screenshot: "only-on-failure",
     //video: "retain-on-failure"
-    trace: "on"
+    trace: "on",
+    storageState: 'storageState.json'
 
   },
-  testMatch: ["TopNews.test.ts"],
+  testMatch: ["practice.test.ts"],
   //reporter: [["dot"], ["json", { outputFile: "test-result.json" }]],
-  timeout: 120000
-
+  reporter: [[`./CustomReporterConfig.ts`], [`html`, { outputFolder: 'html-report' }]],
+  timeout: 120000,
+  globalSetup: require.resolve('./global-setup')
 }
 
 export default config;

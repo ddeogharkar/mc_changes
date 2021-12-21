@@ -6,4 +6,9 @@ export class TopNewsPageObjects {
   TOPNEWS_IMAGE = "//div[@id='root']//div[contains(@class,'hero feed--with-carousel')]//div[@class='content__image']"
   TOPNEWS_TITLE = "//div[@id='root']//div[contains(@class,'hero feed--with-carousel')]//div[@class='content-title']"
   TOPNEWS_SUMMARY = "//div[@id='root']//div[contains(@class,'hero feed--with-carousel')]//div[@class='content-summary']"
+  TOPNEWS_IMAGE_COLLECTION = "//div[@id='root']//div[1]//div[@class='feed feed--light feed--flat feed--fill feed--hero feed--with-carousel']//div[@class='content__image']"
+  FIRSTUP_IMAGE_TITLE = "//div[@class='content-info__text']//h3"
+  FIRSTUP_ARROW = "//section[@class='content-details']//a//i";
+  VIEW_ALL_LINK = "//div[@class='mc-topnews-viewall']//a[text()='View all']"
+  FIRSTUP_CHANEL_NAME = "(//a[@class='channel__link link'])[2]//h5"
 }

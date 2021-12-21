@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 import { TopNewsPageObjects } from "../pageObjects/TopNewsPageObjects";
 import testData from "../../Data/testData.json"
+import { Utilities } from "../../Utils/Utilities";
 
 export class TopNewsPage {
 
@@ -22,7 +23,7 @@ export class TopNewsPage {
   async clickTopNewsDots(i: number): Promise<void> {
     const dotsClick = this.page.frameLocator(this.topNewsPageObjects.TOPNEWS_IFRAME)
     await dotsClick.locator(this.topNewsPageObjects.TOPNEWS_DOTS).nth(i).click();
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForTimeout(1000);
   }
 
   async goThroughDots(): Promise<void> {
@@ -36,7 +37,7 @@ export class TopNewsPage {
     return webpartStatus;
   }
 
-  async GetTotalDots(): Promise<Number> {
+  async GetTotalDots(): Promise<number> {
 
     let totalDotsCount = this.page.frameLocator(this.topNewsPageObjects.TOPNEWS_IFRAME)
       .locator(this.topNewsPageObjects.TOPNEWS_DOTS)
@@ -77,25 +78,6 @@ export class TopNewsPage {
   }
 
   async TopNewsImageTitleAndSummary(): Promise<boolean[]> {
-    // let flag = []
-    // let i: 1
-    // do {
-
-    //   await this.clickTopNewsDots(i)
-
-    //   i++;
-
-    //   if (await this.VerifyTopNewsImageIsPresent() && await this.GetTopNewsTitle() != null && await this.GetTopNewsSummary() != null) {
-    //     flag.push(true);
-    //   }
-    //   else {
-    //     flag.push(false);
-    //   }
-
-    // }
-    // while (i <= await this.GetTotalDots());
-
-    // return flag;
 
     let flag = []
 
@@ -125,6 +107,44 @@ export class TopNewsPage {
     else {
       return false;
     }
+  }
+
+  async VerifyNavigationToArticleLandingPage(): Promise<boolean> {
+    const randomNum = Utilities.getRandomInt(0, await this.GetTotalDots() - 1);
+    await this.clickTopNewsDots(randomNum);
+
+    const ActualTopNewsTitle = await this.GetTopNewsTitle();
+
+    const [popup] = await Promise.all([
+      this.page.waitForEvent('popup'),
+
+      this.page.frameLocator(this.topNewsPageObjects.TOPNEWS_IFRAME)
+        .locator(this.topNewsPageObjects.TOPNEWS_IMAGE_COLLECTION).click()
+    ]);
+    await popup.waitForLoadState('load');
+
+    console.log(popup.url());
+
+    const expectedTopNewsTitle = await popup.locator(this.topNewsPageObjects.FIRSTUP_IMAGE_TITLE).textContent();
+
+    return ActualTopNewsTitle === expectedTopNewsTitle ? true : false
+  }
+
+  async VerifyNavigationLandingPageAfterClikingViewAllLink(): Promise<boolean> {
+
+    const viewAllLink = await this.page.waitForSelector(this.topNewsPageObjects.VIEW_ALL_LINK);
+    await viewAllLink.click();
+
+    await this.page.waitForTimeout(5000);
+
+    const actualChanelName = this.page.locator(this.topNewsPageObjects.FIRSTUP_CHANEL_NAME).textContent();
+
+    console.log(await actualChanelName);
+
+    const expectedChanelName = testData.GlobalChannelName;
+
+    return await actualChanelName === expectedChanelName ? true : false;
+
   }
 
 }
