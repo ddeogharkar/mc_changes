@@ -37,7 +37,7 @@ export class LoginPage {
 
     const [popup] = await Promise.all([
       this.page.waitForEvent('popup'),
-      this.page.click(this.loginPageObjects.FIRSTUP_SIGNIN_LINK),  // Opens popup
+      //this.page.click(this.loginPageObjects.FIRSTUP_SIGNIN_LINK),  // Opens popup
     ]);
     await popup.waitForLoadState('load');
 

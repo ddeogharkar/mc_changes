@@ -3,6 +3,7 @@ import test from "@playwright/test";
 //import test from "../fixture/baseTest";
 //import testData from "../Data/appData.json"
 import { Utilities } from "../Utils/Utilities";
+import globalSetup from "../global-setup";
 
 // test.beforeEach(async ({ loginPage }) => {
 
@@ -24,7 +25,7 @@ import { Utilities } from "../Utils/Utilities";
 
 test("practice", async ({ page }) => {
   //utils = new Utilities();
-  await page.title();
+  console.log(await page.title());
   //Utilities.getRandomInt(10, 20);
 })
 

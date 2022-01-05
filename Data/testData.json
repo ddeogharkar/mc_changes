@@ -1,4 +1,8 @@
 {
   "TopNewsImageURL": "https://images.socialchorus.com/image",
-  "GlobalChannelName": "Top News (global)"
+  "GlobalChannelName": "Top News (global)",
+  "ExpectedBillboardTitle": "Billboards",
+  "HomePageTitle": "theHUB - Home",
+  "GlobalEventsLandingPageTitle": "Pages - Mastercard Events",
+  "RegioanlNewsWebPartTitle": "Regional News"
 }
