@@ -1,4 +1,5 @@
 import { ElementHandle, Locator, Page } from "@playwright/test";
+import { Utilities } from "../../Utils/Utilities";
 import { CommonPageObjects } from "../pageObjects/CommonPageObjects";
 
 export class CommonPage {
@@ -18,7 +19,8 @@ export class CommonPage {
     await this.ClickSearchIcon();
 
     for await (const iterator of await this.GetAllTitlesOnCard(CardLocator)) {
-      if (iterator.includes(expectedTitle[1])) {
+      console.log(iterator.trim());
+      if (expectedTitle[1].trim().includes(iterator.trim())) {
         flag.push(true)
       }
       else {
@@ -76,13 +78,48 @@ export class CommonPage {
     let RandomTitle = "wheeledToLotusCourt motorToLotusCourt"
     await this.SearchInPage(RandomTitle);
     await this.ClickSearchIcon();
-    let cards = (await this.page.$$(cardLocator)).length
+    await this.page.waitForTimeout(5000);
+    let cards = await this.page.$$(cardLocator);
 
-    return cards === 0 ? true : false;
+    return cards.length === 0 ? true : false;
   }
 
   async GetAllCardsOnLandingPage(locator: string): Promise<ElementHandle[]> {
     let cardCollection = await this.page.$$(locator)
     return cardCollection;
   }
+
+  async PostComment(): Promise<boolean> {
+    let status = [];
+    //await this.page.locator(this.CommonPageObjects.OBJ_COMMENTS_FIELD).scrollIntoViewIfNeeded();
+    let commentTxt = `Test Comment ${Utilities.getRandomInt(1, 10)}`;
+    await this.page.waitForSelector(this.CommonPageObjects.OBJ_COMMENTS_FIELD);
+    await this.page.fill(this.CommonPageObjects.OBJ_COMMENTS_FIELD, commentTxt);
+    await this.page.waitForTimeout(5000);
+    await this.page.click(this.CommonPageObjects.OBJ_COMMENT_POST_BTN);
+    await this.page.waitForTimeout(5000);
+    let commentsCnt = await this.page.locator(this.CommonPageObjects.OBJ_COMMENT_POSTED).count();
+    if (commentsCnt >= 1) {
+      let postedCommentList = await this.page.$$(this.CommonPageObjects.OBJ_COMMENT_POSTED)
+      for await (const item of postedCommentList) {
+        let myComment = await item.textContent();
+        console.log(myComment);
+        if (myComment === commentTxt) {
+          await this.DeleteComment();
+          status.push(true);
+        } else {
+          status.push(false);
+        }
+      }
+    }
+    return status.includes(true) ? true : false;
+  }
+
+  async DeleteComment(): Promise<void> {
+    await this.page.click(this.CommonPageObjects.OBJ_MENU_COMMENT);
+    await this.page.click(this.CommonPageObjects.OBJ_COMMENT_DELETE_BTN);
+    await this.page.click(this.CommonPageObjects.OBJ_YES_BTN_ON_DIALOG);
+    await this.page.waitForTimeout(3000);
+  }
+
 }

@@ -5,4 +5,6 @@ export class RegionalNewsPageObject {
   OBJ_REGIONAL_NEWS_CARD = "//div[@class='feed-list feed-list-padding--default']//button[@class='content-card--screen-reader-only']"
   OBJ_REGIONAL_NEWS_FU_TITLE = "//div[@class='content-info__text']//h3"
   OBJ_REGIONAL_NEWS_TITLES = "div.content-card__title>div.content-title"
+  OBJ_REGIONAL_NEWS_VIEW_ALL_LINK = "//div[@id='topnews']//a[text()='View all']"
+  OBJ_REGIONAL_NEWS_FU_CHANNEL_NAME = "//h5[@class='channel__title']"
 }

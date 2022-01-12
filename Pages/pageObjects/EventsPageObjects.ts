@@ -14,7 +14,7 @@ export class EventsPageObjects {
   OBJ_DATE_ON_EVENTS_CARD = "//div[@class='mc-card-calendar-desc']"
   OBJ_ADD_To_CALENDAR_ON_CARD = "(//div[@class='mc-card-calendar-item'])[2]//span[@class='mc-card-calendar-calltoaction']//span"
   OBJ_EVENTS_CARDS_ON_LANDING_PAGE = "//div[@class='mc-card-calendar-item']"
-  OBJ_Events_CARD_TITLE_ON_LANDING_Page = "//div[@class='mc-card-calendar-item']//div[@class='mc-card-calendar-title']"
+  OBJ_EVENTS_CARD_TITLES_ON_LANDING_Page = "//div[@class='mc-card-calendar-item']//div[@class='mc-card-calendar-title']"
   OBJ_EVENT_POP_UP_ON_LANDING_PAGE = "//div[@class='ms-dlgContent']"
   OBJ_EVENT_POP_UP_IFRAME_ON_LANDING_PAGE = "//iframe[@class='ms-dlgFrame']"
   OBJ_CLOSE_BTN_ON_EVENT_POP_UP_ON_LANDING_PAGE = "(//input[contains(@id,'GoBack')])[2]"

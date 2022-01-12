@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 import { RegionalNewsPageObject } from "../pageObjects/RegionalNewsPageObject";
 import testData from "../../Data/testData.json"
+import { Utilities } from "../../Utils/Utilities";
 
 
 export class RegionalNewsPage {
@@ -42,5 +43,43 @@ export class RegionalNewsPage {
   async ClickOnDot(j: number): Promise<void> {
     let frame = await this.page.frameLocator(this.RegionalPageObjects.OBJ_FRAME_REGIONAL_NEWS)
       .locator(this.RegionalPageObjects.OBJ_DOTS).nth(j).click();
+  }
+
+  private async GetRegionalNewsTitle(): Promise<string> {
+
+    const newsTitle = this.page.frameLocator(this.RegionalPageObjects.OBJ_FRAME_REGIONAL_NEWS)
+      .locator(this.RegionalPageObjects.OBJ_REGIONAL_NEWS_TITLES).nth(0);
+
+    console.log(await newsTitle.textContent());
+    return await newsTitle.textContent();
+  }
+
+  async VerifyNavigationToRegionalNewsLandingPage(): Promise<boolean> {
+    const randomNum = Utilities.getRandomInt(0, await this.GetTotalDots() - 1);
+    await this.ClickOnDot(randomNum);
+    const ActualRegionalNewsTitle = await this.GetRegionalNewsTitle();
+    const [popup] = await Promise.all([
+      this.page.waitForEvent('popup'),
+
+      this.page.frameLocator(this.RegionalPageObjects.OBJ_FRAME_REGIONAL_NEWS)
+        .locator(this.RegionalPageObjects.OBJ_REGIONAL_NEWS_TITLES).nth(0).click()
+    ]);
+    await popup.waitForLoadState('load');
+
+    console.log(popup.url());
+    const expectedRegionalNewsTitle = await popup.locator(this.RegionalPageObjects.OBJ_REGIONAL_NEWS_FU_TITLE).textContent();
+
+    await this.page.bringToFront()
+
+    return ActualRegionalNewsTitle === expectedRegionalNewsTitle ? true : false
+
+  }
+
+  async VerifyNavigationOnClickOnViewAllLnk(): Promise<boolean> {
+    await this.page.locator(this.RegionalPageObjects.OBJ_REGIONAL_NEWS_VIEW_ALL_LINK).click();
+    await this.page.waitForTimeout(5000);
+    //await this.page.waitForNavigation();
+    const ChannelName = await this.page.locator(this.RegionalPageObjects.OBJ_REGIONAL_NEWS_FU_CHANNEL_NAME).textContent();
+    return testData.Regional_News_FU_Channel_Name.includes(ChannelName) ? true : false;
   }
 }

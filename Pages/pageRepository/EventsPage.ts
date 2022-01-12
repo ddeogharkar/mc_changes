@@ -193,7 +193,7 @@ export class EventsPage {
     let commonPage = new CommonPage(this.page);
 
     status = await commonPage
-      .SearchFunction(this.EventsPageObjects.OBJ_Events_CARD_TITLE_ON_LANDING_Page, this.EventsPageObjects.OBJ_EVENTS_CARDS_ON_LANDING_PAGE)
+      .SearchFunction(this.EventsPageObjects.OBJ_EVENTS_CARD_TITLES_ON_LANDING_Page, this.EventsPageObjects.OBJ_EVENTS_CARDS_ON_LANDING_PAGE)
 
     await commonPage.ClearSearchField();
 
@@ -204,14 +204,14 @@ export class EventsPage {
 
   async VerifySearchWithInvalidTitle(): Promise<boolean> {
     let commonPage = new CommonPage(this.page);
-    if (commonPage.InValidSearchFunction(this.EventsPageObjects.OBJ_EVENTS_CARDS_ON_LANDING_PAGE)) {
-      commonPage.ClearSearchField();
-      commonPage.ClickSearchIcon();
+    if (await commonPage.InValidSearchFunction(this.EventsPageObjects.OBJ_EVENTS_CARDS_ON_LANDING_PAGE)) {
+      await commonPage.ClearSearchField();
+      await commonPage.ClickSearchIcon();
       return true;
     }
     else {
-      commonPage.ClearSearchField();
-      commonPage.ClickSearchIcon();
+      await commonPage.ClearSearchField();
+      await commonPage.ClickSearchIcon();
       return false;
     }
   }
